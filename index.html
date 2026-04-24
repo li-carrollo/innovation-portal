@@ -4,17 +4,11 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Innovation Portal</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
     tailwind.config = {
       theme: {
         extend: {
-          fontFamily: {
-            sans: ['Poppins', 'sans-serif'],
-          },
           colors: {
             brand: {
               orange: "#F26522",
@@ -257,7 +251,7 @@
                 Open Projects
               </button>
               <button id="submit-idea-cta" class="lift inline-flex min-h-[3.5rem] items-center justify-center rounded-full border border-brand-navy/10 bg-white/80 px-6 text-base font-bold text-brand-navy shadow-soft">
-                + Submit Idea 
+                + Submit Idea
               </button>
             </div>
 
@@ -381,8 +375,7 @@
         url: "https://example.com/project-portfolio-management",
         tone: "innovation",
         icon: "layers",
-        primaryAction: "Open portfolio",
-        aliases: ["ppm"]
+        primaryAction: "Open portfolio"
       },
       {
         name: "AI Chatbot",
@@ -414,8 +407,7 @@
         url: "https://example.com/ai-knowledgebase",
         tone: "ai",
         icon: "book",
-        primaryAction: "Search knowledge",
-        aliases: ["kb", "knowledge base"]
+        primaryAction: "Search knowledge"
       },
       {
         name: "Setup Wizard",
@@ -431,8 +423,7 @@
         url: "https://example.com/setup-wizard",
         tone: "operations",
         icon: "wand",
-        primaryAction: "Start setup",
-        aliases: ["data", "data gathering"]
+        primaryAction: "Start setup"
       },
       {
         name: "Dashboard Variance",
@@ -583,7 +574,7 @@
                   class="tool-card panel lift rounded-[1.75rem] p-6 shadow-soft"
                   data-name="${tool.name.toLowerCase()}"
                   data-categories='${JSON.stringify(tool.categories)}'
-                  data-search="${[tool.name, tool.group, tool.description, tool.usageHint, tool.metricLabel, tool.status, ...(tool.aliases || [])].join(" ").toLowerCase()}"
+                  data-search="${[tool.name, tool.group, tool.description, tool.usageHint, tool.metricLabel, tool.status].join(" ").toLowerCase()}"
                   data-tone="${group.tone}"
                   data-url="${tool.url}"
                   tabindex="0"
