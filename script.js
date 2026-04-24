@@ -2,7 +2,7 @@ const projects = [
   {
     name: "Innovation Hub",
     category: "Core Platform",
-    filterCategory: ["ops"],
+    filterCategory: "ops",
     description: "Central launchpad for innovation initiatives, shared resources, and connected internal workspaces.",
     url: "https://example.com/innovation-hub",
     status: "active",
@@ -14,7 +14,7 @@ const projects = [
   {
     name: "AI chatbot",
     category: "Artificial Intelligence",
-    filterCategory: ["ai"],
+    filterCategory: "ai",
     description: "Conversational assistant experience for answering questions, guiding workflows, and supporting teams.",
     url: "https://example.com/ai-chatbot",
     status: "active",
@@ -26,7 +26,7 @@ const projects = [
   {
     name: "AI Knowledgebase",
     category: "Knowledge System",
-    filterCategory: ["knowledge", "ai"],
+    filterCategory: "knowledge",
     description: "Searchable knowledge environment for documents, answers, references, and organization-wide learning.",
     url: "https://example.com/ai-knowledgebase",
     status: "beta",
@@ -38,9 +38,9 @@ const projects = [
   {
     name: "Setup Wizard",
     category: "Configuration",
-    filterCategory: ["ops"],
+    filterCategory: "ops",
     description: "Guided onboarding flow for setting up tools, environments, and project-ready configurations.",
-    url: "https://setup-wizard.serviceitplus.com/",
+    url: "https://example.com/setup-wizard/",
     status: "active",
     statusLabel: "Active",
     icon: "wand",
@@ -50,7 +50,7 @@ const projects = [
   {
     name: "Dashboard Variance",
     category: "Analytics",
-    filterCategory: ["ops"],
+    filterCategory: "ops",
     description: "Track performance movement, exceptions, and operational variance through a focused dashboard view.",
     url: "https://example.com/dashboard-variance",
     status: "active",
@@ -62,7 +62,7 @@ const projects = [
   {
     name: "Project Portfolio Management",
     category: "Governance",
-    filterCategory: ["ops"],
+    filterCategory: "ops",
     description: "Portfolio-level visibility for prioritization, planning, dependencies, and decision support.",
     url: "https://example.com/project-portfolio-management",
     status: "beta",
@@ -74,7 +74,7 @@ const projects = [
   {
     name: "GLPi",
     category: "Service Management",
-    filterCategory: ["ops"],
+    filterCategory: "ops",
     description: "Service desk and IT asset management workspace for requests, issue handling, and operational support.",
     url: "https://example.com/glpi",
     status: "active",
@@ -86,7 +86,7 @@ const projects = [
   {
     name: "MediaWiki",
     category: "Collaboration",
-    filterCategory: ["knowledge"],
+    filterCategory: "knowledge",
     description: "Collaborative documentation space for process knowledge, project pages, and shared institutional memory.",
     url: "https://example.com/mediawiki",
     status: "active",
@@ -200,7 +200,7 @@ function createProjectCard(project, index) {
   article.setAttribute("role", "link");
   article.setAttribute("aria-label", `Open ${project.name}`);
   article.dataset.url = project.url;
-  article.dataset.category = JSON.stringify(project.filterCategory);
+  article.dataset.category = project.filterCategory;
   article.dataset.search = [
     project.name,
     project.category,
@@ -291,8 +291,7 @@ function filterProjects(query) {
 
   projectCards.forEach((card) => {
     const matchesSearch = !normalizedQuery || card.dataset.search.includes(normalizedQuery);
-    const categories = JSON.parse(card.dataset.category || "[]");
-    const matchesFilter = searchState.activeFilter === "all" || categories.includes(searchState.activeFilter);
+    const matchesFilter = searchState.activeFilter === "all" || card.dataset.category === searchState.activeFilter;
     const matches = matchesSearch && matchesFilter;
     card.classList.toggle("is-hidden", !matches);
 
@@ -353,6 +352,11 @@ filterBar.addEventListener("click", (event) => {
   }
 
   updateFilterState(button.dataset.filter);
+});
+
+document.querySelector('a[href="#projects"]').addEventListener("click", (event) => {
+  event.preventDefault();
+  projectsSection.scrollIntoView({ behavior: "smooth", block: "start" });
 });
 
 updateSearchState();
