@@ -3,119 +3,716 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Service IT+ Innovation Portal</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css">
+  <title>Innovation Portal</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              orange: "#F26522",
+              navy: "#2D307A",
+              soft: "#F6F3EE"
+            }
+          },
+          boxShadow: {
+            soft: "0 18px 50px rgba(15, 23, 42, 0.08)",
+            glow: "0 18px 42px rgba(242, 101, 34, 0.18)"
+          },
+          borderRadius: {
+            "4xl": "2rem"
+          }
+        }
+      }
+    };
+  </script>
+  <style>
+    :root {
+      --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    html {
+      scroll-behavior: smooth;
+      scroll-snap-type: y mandatory;
+    }
+
+    body {
+      background:
+        radial-gradient(circle at top left, rgba(242, 101, 34, 0.14), transparent 30%),
+        radial-gradient(circle at 85% 12%, rgba(45, 48, 122, 0.1), transparent 24%),
+        linear-gradient(180deg, #fcfaf7 0%, #f6f3ee 100%);
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      background:
+        linear-gradient(115deg, rgba(255, 255, 255, 0.42), transparent 28%),
+        repeating-linear-gradient(
+          90deg,
+          transparent 0,
+          transparent 78px,
+          rgba(45, 48, 122, 0.05) 79px,
+          rgba(45, 48, 122, 0.05) 80px
+        );
+      opacity: 0.16;
+      z-index: 0;
+    }
+
+    .section-shell {
+      position: relative;
+      z-index: 1;
+      min-height: 100dvh;
+      display: flex;
+      align-items: center;
+      padding: 7rem 0 5rem;
+      scroll-snap-align: start;
+      scroll-snap-stop: always;
+    }
+
+    .section-shell--hero {
+      padding-top: 5rem;
+    }
+
+    .panel {
+      background: rgba(255, 255, 255, 0.72);
+      backdrop-filter: blur(18px);
+      border: 1px solid rgba(45, 48, 122, 0.08);
+    }
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(26px);
+      transition: opacity 700ms var(--ease-out), transform 700ms var(--ease-out);
+    }
+
+    .reveal.is-visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .pulse-dot {
+      animation: pulse 1.8s ease-in-out infinite;
+    }
+
+    .lift {
+      transition:
+        transform 240ms var(--ease-out),
+        box-shadow 240ms var(--ease-out),
+        border-color 240ms var(--ease-out),
+        background 240ms var(--ease-out);
+    }
+
+    .lift:hover {
+      transform: translateY(-4px) scale(1.01);
+    }
+
+    .tool-card.is-hidden,
+    .tool-group.is-hidden {
+      display: none;
+    }
+
+    .story-divider {
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(45, 48, 122, 0.18), transparent);
+    }
+
+    .hero-orb {
+      background:
+        radial-gradient(circle at 30% 30%, rgba(242, 101, 34, 0.28), transparent 35%),
+        radial-gradient(circle at 70% 70%, rgba(45, 48, 122, 0.16), transparent 38%),
+        rgba(255, 255, 255, 0.6);
+      border: 1px solid rgba(255, 255, 255, 0.55);
+      box-shadow: 0 22px 70px rgba(15, 23, 42, 0.08);
+    }
+
+    .tool-card-link {
+      opacity: 0.72;
+      transition: opacity 240ms var(--ease-out), transform 240ms var(--ease-out);
+    }
+
+    .tool-card:hover .tool-card-link,
+    .tool-card:focus-within .tool-card-link {
+      opacity: 1;
+      transform: translateX(2px);
+    }
+
+    .tool-card[data-tone="innovation"] {
+      background:
+        radial-gradient(circle at top right, rgba(242, 101, 34, 0.2), transparent 30%),
+        linear-gradient(180deg, rgba(255, 255, 255, 0.94), rgba(255, 248, 244, 0.94));
+    }
+
+    .tool-card[data-tone="ai"] {
+      background:
+        radial-gradient(circle at top right, rgba(45, 48, 122, 0.2), transparent 30%),
+        linear-gradient(180deg, rgba(255, 255, 255, 0.94), rgba(243, 245, 255, 0.94));
+    }
+
+    .tool-card[data-tone="operations"] {
+      background:
+        radial-gradient(circle at top right, rgba(14, 165, 233, 0.16), transparent 30%),
+        linear-gradient(180deg, rgba(255, 255, 255, 0.94), rgba(243, 250, 255, 0.94));
+    }
+
+    .tool-card[data-tone="support"] {
+      background:
+        radial-gradient(circle at top right, rgba(151, 152, 151, 0.18), transparent 30%),
+        linear-gradient(180deg, rgba(255, 255, 255, 0.94), rgba(248, 248, 247, 0.94));
+    }
+
+    @keyframes pulse {
+      0%, 100% {
+        transform: scale(1);
+        box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.45);
+      }
+      50% {
+        transform: scale(1.14);
+        box-shadow: 0 0 0 10px rgba(34, 197, 94, 0);
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *,
+      *::before,
+      *::after {
+        animation: none !important;
+        transition: none !important;
+        scroll-behavior: auto !important;
+      }
+    }
+
+    @media (max-width: 1023px) {
+      .section-shell {
+        min-height: auto;
+        padding: 5.5rem 0 4rem;
+        scroll-snap-align: none;
+        scroll-snap-stop: normal;
+      }
+
+      html {
+        scroll-snap-type: y proximity;
+      }
+    }
+  </style>
 </head>
-<body>
-  <div class="page-shell">
-    <div class="ambient ambient-orange"></div>
-    <div class="ambient ambient-blue"></div>
-
-    <header class="site-header">
-      <nav class="topbar" id="topbar">
-        <div class="brand-lockup">
-          <img class="brand-logo" src="assets/sit-plus-logo.png" alt="Service IT+ logo">
-          <div>
-            <p class="eyebrow">Service IT+ Digital Workspace</p>
-            <h1>Innovation Portal</h1>
-          </div>
+<body class="font-sans text-slate-950 antialiased">
+  <header class="sticky top-0 z-30 border-b border-slate-200/60 bg-white/70 backdrop-blur-xl">
+    <div class="mx-auto flex max-w-7xl flex-col gap-4 px-4 py-4 sm:px-6 lg:flex-row lg:items-center lg:justify-between lg:px-8">
+      <div class="flex items-center gap-4">
+        <img src="assets/sit-plus-logo.png" alt="Service IT+ logo" class="h-10 w-auto sm:h-12">
+        <div>
+          <p class="text-[0.7rem] font-semibold uppercase tracking-[0.3em] text-brand-navy/70">Innovation Portal</p>
+          <h1 class="text-xl font-bold tracking-tight sm:text-2xl">Service IT+ Workspace</h1>
         </div>
-        <label class="topbar-search" for="project-search">
-          <span class="search-icon" aria-hidden="true">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-              <circle cx="11" cy="11" r="7"></circle>
-              <path d="m20 20-3.5-3.5"></path>
-            </svg>
-          </span>
-          <span class="search-label">Search project</span>
-          <input
-            id="project-search"
-            class="search-input"
-            type="search"
-            name="project-search"
-            placeholder="Search by name, category, or status"
-            autocomplete="off"
-          >
-          <span class="search-shortcut" aria-hidden="true">Cmd + K</span>
-        </label>
-      </nav>
-    </header>
+      </div>
 
-    <header class="hero" id="hero-section">
-      <section class="hero-panel">
-        <div class="hero-copy">
-          <p class="section-label">Brand-aligned launchpad</p>
-          <h2>One branded destination for every <span class="hero-accent">innovation initiative</span>.</h2>
-          <p class="hero-text">
-            Give teams a cleaner way to reach project workspaces, pilot environments, support tools,
-            and internal platforms with a portal designed around the Service IT+ identity.
-          </p>
-        </div>
+      <label class="panel lift flex w-full items-center gap-3 rounded-full px-4 py-3 shadow-soft lg:w-[34rem]">
+        <svg class="h-5 w-5 text-brand-navy" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <circle cx="11" cy="11" r="7"></circle>
+          <path d="m20 20-3.5-3.5"></path>
+        </svg>
+        <input id="portal-search" type="search" placeholder="Search projects, tools, knowledge..." class="w-full bg-transparent text-sm text-slate-900 outline-none placeholder:text-slate-500 sm:text-base">
+        <span class="hidden rounded-full bg-slate-100 px-2 py-1 text-xs font-semibold text-slate-500 sm:inline-flex">Ctrl/Cmd + K</span>
+      </label>
+    </div>
+  </header>
 
-        <aside class="highlight-card">
-          <p class="highlight-label">Portal Snapshot</p>
-          <div class="metric-grid">
-            <div class="metric">
-              <span class="metric-value" id="project-count">0</span>
-              <span class="metric-name">Projects</span>
+  <main>
+    <section class="section-shell section-shell--hero">
+      <div class="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8">
+        <div class="grid gap-12 lg:grid-cols-[minmax(0,1.2fr)_minmax(260px,0.55fr)] lg:items-end">
+          <div class="reveal">
+            <div class="mb-5 inline-flex items-center gap-3 rounded-full border border-emerald-200 bg-white/70 px-4 py-2 text-sm font-semibold text-brand-navy shadow-soft">
+              <span class="pulse-dot h-2.5 w-2.5 rounded-full bg-emerald-500"></span>
+              <span><span id="active-project-count" class="text-brand-orange">08</span> active projects ready</span>
             </div>
-            <div class="metric">
-              <span class="metric-value" id="search-ready-count">01</span>
-              <span class="metric-name">Search</span>
+            <p class="mb-4 text-xs font-semibold uppercase tracking-[0.32em] text-brand-navy/70">Innovation Portal</p>
+            <h2 class="max-w-3xl text-5xl font-black leading-[0.92] tracking-tight sm:text-6xl lg:text-7xl">
+              Open the right project and get to work immediately.
+            </h2>
+            <p class="mt-6 max-w-2xl text-lg text-slate-600 sm:text-xl">
+              Search, browse, and launch. This workspace is a clean front door to your innovation
+              projects, AI tools, support platforms, and knowledge destinations.
+            </p>
+
+            <div class="mt-8 flex flex-col gap-3 sm:flex-row">
+              <button id="open-projects-cta" class="lift inline-flex min-h-[3.5rem] items-center justify-center rounded-full bg-brand-orange px-6 text-base font-bold text-white shadow-glow">
+                Open Projects
+              </button>
+              <button id="submit-idea-cta" class="lift inline-flex min-h-[3.5rem] items-center justify-center rounded-full border border-brand-navy/10 bg-white/80 px-6 text-base font-bold text-brand-navy shadow-soft">
+                Submit Idea
+              </button>
             </div>
-            <div class="metric wide">
-              <span class="metric-name">Purpose</span>
-              <strong>Find the right innovation workspace quickly and launch it from one branded portal.</strong>
+
+            <div class="mt-10 grid gap-4 sm:grid-cols-3">
+              <article class="panel reveal rounded-3xl p-5 shadow-soft">
+                <p class="text-xs font-semibold uppercase tracking-[0.2em] text-slate-500">Projects Updated Today</p>
+                <strong class="mt-3 block text-3xl font-black text-brand-navy">09</strong>
+                <p class="mt-2 text-sm text-slate-600">Teams are actively shipping updates into live workspaces.</p>
+              </article>
+              <article class="panel reveal rounded-3xl p-5 shadow-soft">
+                <p class="text-xs font-semibold uppercase tracking-[0.2em] text-slate-500">AI Conversations</p>
+                <strong class="mt-3 block text-3xl font-black text-brand-navy">128</strong>
+                <p class="mt-2 text-sm text-slate-600">Questions handled through the chatbot and knowledge tools.</p>
+              </article>
+              <article class="panel reveal rounded-3xl p-5 shadow-soft">
+                <p class="text-xs font-semibold uppercase tracking-[0.2em] text-slate-500">Setup Sessions</p>
+                <strong class="mt-3 block text-3xl font-black text-brand-navy">02</strong>
+                <p class="mt-2 text-sm text-slate-600">Teams are configuring new environments right now.</p>
+              </article>
             </div>
           </div>
-        </aside>
-      </section>
-    </header>
 
-    <main>
-      <section class="filters-section">
-        <div class="filter-bar" id="category-filters" role="tablist" aria-label="Project categories">
-          <button class="filter-chip is-active" type="button" data-filter="all">All</button>
-          <button class="filter-chip" type="button" data-filter="ai">AI</button>
-          <button class="filter-chip" type="button" data-filter="ops">Ops</button>
-          <button class="filter-chip" type="button" data-filter="knowledge">Knowledge</button>
-        </div>
-      </section>
-
-      <section class="projects-section" id="projects-section">
-        <div class="section-header">
-          <div>
-            <p class="section-label">Active Destinations</p>
-            <h3>Innovation tools and platforms</h3>
+          <div class="reveal flex h-full items-end lg:justify-end">
+            <div class="hero-orb rounded-[2rem] p-8 lg:max-w-sm">
+              <p class="text-xs font-semibold uppercase tracking-[0.24em] text-brand-navy/70">Portal Status</p>
+              <div class="mt-6 space-y-5">
+                <div class="panel rounded-3xl p-5 shadow-soft">
+                  <div class="flex items-center justify-between gap-4">
+                    <span class="text-sm font-semibold text-slate-500">Projects online</span>
+                    <span class="inline-flex items-center gap-2 rounded-full bg-emerald-50 px-3 py-2 text-xs font-semibold uppercase tracking-[0.16em] text-emerald-700">
+                      <span class="pulse-dot h-2 w-2 rounded-full bg-emerald-500"></span>
+                      Live
+                    </span>
+                  </div>
+                  <strong class="mt-4 block text-4xl font-black text-brand-navy">08</strong>
+                  <p class="mt-3 text-sm text-slate-600">Every card below opens a destination URL directly, so this portal stays focused on access instead of workflow.</p>
+                </div>
+                <div class="rounded-3xl border border-brand-navy/10 bg-white/70 p-5">
+                  <p class="text-xs font-semibold uppercase tracking-[0.2em] text-slate-500">Best way to use it</p>
+                  <p class="mt-3 text-base text-slate-700">Use search when you know the project name, or scroll to grouped tools to browse by function.</p>
+                </div>
+              </div>
+            </div>
           </div>
-          <p class="section-text">
-            Search above to jump faster. Each card opens its linked innovation project in a new tab.
-          </p>
         </div>
+      </div>
+    </section>
 
-        <p class="results-meta" id="results-meta">Showing all projects.</p>
-        <div class="project-grid" id="project-grid" aria-live="polite"></div>
-        <p class="empty-state" id="empty-state" hidden>No matching projects found. Try a different keyword.</p>
-      </section>
+    <div class="story-divider mx-auto max-w-7xl px-4 sm:px-6 lg:px-8"></div>
 
-      <section class="guide-section" id="guide">
-        <div class="guide-card">
-          <div>
-            <p class="section-label">Quick update guide</p>
-            <h3>Change the project names and links in one file.</h3>
+    <section id="tools-section" class="section-shell">
+      <div class="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8">
+        <div class="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
+          <div class="reveal max-w-3xl">
+            <p class="mb-3 text-xs font-semibold uppercase tracking-[0.28em] text-brand-navy/70">Project Directory</p>
+            <h2 class="text-4xl font-black tracking-tight sm:text-5xl">Browse by group and launch directly.</h2>
+            <p class="mt-4 text-lg text-slate-600">Every tile below is a redirect point. Pick a category, find the right project, and open it immediately.</p>
           </div>
-          <p>
-            Update the <code>projects</code> array in <code>script.js</code> to manage each project tile.
-            The layout lives in <code>index.html</code>, while <code>styles.css</code> controls the branded UI.
-          </p>
+          <div class="reveal">
+            <div id="category-filters" class="flex flex-wrap gap-3">
+              <button class="lift rounded-full border border-brand-navy/10 bg-white/80 px-4 py-2 text-sm font-semibold text-brand-navy shadow-soft is-active" data-filter="all" type="button">All</button>
+              <button class="lift rounded-full border border-brand-navy/10 bg-white/80 px-4 py-2 text-sm font-semibold text-brand-navy shadow-soft" data-filter="ai" type="button">AI</button>
+              <button class="lift rounded-full border border-brand-navy/10 bg-white/80 px-4 py-2 text-sm font-semibold text-brand-navy shadow-soft" data-filter="ops" type="button">Ops</button>
+              <button class="lift rounded-full border border-brand-navy/10 bg-white/80 px-4 py-2 text-sm font-semibold text-brand-navy shadow-soft" data-filter="knowledge" type="button">Knowledge</button>
+              <button class="lift rounded-full border border-brand-navy/10 bg-white/80 px-4 py-2 text-sm font-semibold text-brand-navy shadow-soft" data-filter="support" type="button">Support</button>
+            </div>
+          </div>
         </div>
-      </section>
-    </main>
-  </div>
 
-  <script src="script.js"></script>
+        <p id="results-meta" class="mt-6 text-sm font-semibold text-brand-navy/80">Showing all tools.</p>
+        <p id="empty-state" class="mt-4 hidden rounded-3xl border border-dashed border-brand-navy/20 bg-white/70 px-5 py-4 text-slate-600">No matching tools found. Try another keyword or category.</p>
+
+        <div id="tool-groups" class="mt-10 grid gap-8"></div>
+      </div>
+    </section>
+
+    <div class="story-divider mx-auto max-w-7xl px-4 sm:px-6 lg:px-8"></div>
+
+    <section id="activity-section" class="section-shell">
+      <div class="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8">
+        <div class="reveal mb-10 max-w-3xl">
+          <p class="mb-3 text-xs font-semibold uppercase tracking-[0.28em] text-brand-navy/70">Activity & Insights</p>
+          <h2 class="text-4xl font-black tracking-tight sm:text-5xl">Useful signals from the portal today.</h2>
+          <p class="mt-4 text-lg text-slate-600">A quick read on what people are opening, searching, and using across the workspace.</p>
+        </div>
+
+        <div id="insights-grid" class="grid gap-5 md:grid-cols-2 xl:grid-cols-4"></div>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    const tools = [
+      {
+        name: "Innovation Hub",
+        group: "Innovation",
+        groupDescription: "Core spaces for initiatives, intake, and portfolio visibility.",
+        categories: ["ops"],
+        status: "Active",
+        statusType: "active",
+        updatedLabel: "Updated today",
+        description: "Central launchpad for innovation initiatives, shared resources, and connected internal workspaces.",
+        metricValue: "24",
+        metricLabel: "live spaces",
+        usageHint: "Start here when you want the broadest view of active projects.",
+        url: "https://example.com/innovation-hub",
+        tone: "innovation",
+        icon: "hub",
+        primaryAction: "Open hub"
+      },
+      {
+        name: "Project Portfolio Management",
+        group: "Innovation",
+        groupDescription: "Core spaces for initiatives, intake, and portfolio visibility.",
+        categories: ["ops"],
+        status: "Beta",
+        statusType: "beta",
+        updatedLabel: "Portfolio synced",
+        description: "Portfolio-level visibility for prioritization, planning, dependencies, and decision support.",
+        metricValue: "37",
+        metricLabel: "tracked initiatives",
+        usageHint: "Use for prioritization and planning across the project portfolio.",
+        url: "https://example.com/project-portfolio-management",
+        tone: "innovation",
+        icon: "layers",
+        primaryAction: "Open portfolio"
+      },
+      {
+        name: "AI Chatbot",
+        group: "AI & Knowledge",
+        groupDescription: "AI support and knowledge discovery for fast decision-making.",
+        categories: ["ai"],
+        status: "Active",
+        statusType: "active",
+        updatedLabel: "Always on",
+        description: "Conversational assistant for questions, workflow guidance, and support across the portal.",
+        metricValue: "128",
+        metricLabel: "conversations today",
+        usageHint: "Best for quick answers and navigation support.",
+        url: "https://example.com/ai-chatbot",
+        tone: "ai",
+        icon: "robot",
+        primaryAction: "Ask AI"
+      },
+      {
+        name: "AI Knowledgebase",
+        group: "AI & Knowledge",
+        groupDescription: "AI support and knowledge discovery for fast decision-making.",
+        categories: ["ai", "knowledge"],
+        status: "Beta",
+        statusType: "beta",
+        updatedLabel: "Indexed today",
+        description: "Searchable knowledge environment for documents, answers, references, and reusable learning.",
+        metricValue: "3.2k",
+        metricLabel: "indexed docs",
+        usageHint: "Use to search knowledge, references, and project context.",
+        url: "https://example.com/ai-knowledgebase",
+        tone: "ai",
+        icon: "book",
+        primaryAction: "Search knowledge"
+      },
+      {
+        name: "Setup Wizard",
+        group: "Operations",
+        groupDescription: "Operational modules that help teams prepare and manage environments.",
+        categories: ["ops"],
+        status: "Active",
+        statusType: "active",
+        updatedLabel: "2 sessions in progress",
+        description: "Guided onboarding flow for setting up tools, environments, and project-ready configurations.",
+        metricValue: "12",
+        metricLabel: "active flows",
+        usageHint: "Best for environment and tool setup.",
+        url: "https://example.com/setup-wizard/",
+        tone: "operations",
+        icon: "wand",
+        primaryAction: "Start setup"
+      },
+      {
+        name: "Dashboard Variance",
+        group: "Operations",
+        groupDescription: "Operational modules that help teams prepare and manage environments.",
+        categories: ["ops"],
+        status: "Active",
+        statusType: "active",
+        updatedLabel: "Signals refreshed",
+        description: "Track performance movement, exceptions, and operational variance through a focused dashboard.",
+        metricValue: "18",
+        metricLabel: "signals detected",
+        usageHint: "Use to review changes, patterns, and operational visibility.",
+        url: "https://example.com/dashboard-variance",
+        tone: "operations",
+        icon: "chart",
+        primaryAction: "Track signals"
+      },
+      {
+        name: "GLPI",
+        group: "Support",
+        groupDescription: "Support tools that help teams resolve issues and stay informed.",
+        categories: ["support", "ops"],
+        status: "Active",
+        statusType: "active",
+        updatedLabel: "Queue refreshed",
+        description: "Service desk and IT asset management workspace for requests, issue handling, and operational support.",
+        metricValue: "42",
+        metricLabel: "tickets open",
+        usageHint: "Use for requests, issue intake, and IT support workflows.",
+        url: "https://example.com/glpi",
+        tone: "support",
+        icon: "toolbox",
+        primaryAction: "Open support"
+      },
+      {
+        name: "MediaWiki",
+        group: "Support",
+        groupDescription: "Support tools that help teams resolve issues and stay informed.",
+        categories: ["knowledge", "support"],
+        status: "Active",
+        statusType: "active",
+        updatedLabel: "Updated today",
+        description: "Collaborative documentation space for process knowledge, project pages, and shared institutional memory.",
+        metricValue: "460",
+        metricLabel: "knowledge pages",
+        usageHint: "Use for documentation, SOPs, and collaborative references.",
+        url: "https://example.com/mediawiki",
+        tone: "support",
+        icon: "library",
+        primaryAction: "Open wiki"
+      }
+    ];
+
+    const insights = [
+      {
+        title: "34 portal launches today",
+        detail: "Teams are using the directory as the front door into active workspaces.",
+        icon: "hub",
+        tone: "text-brand-orange"
+      },
+      {
+        title: "128 AI conversations handled",
+        detail: "The chatbot is actively supporting questions and navigation.",
+        icon: "robot",
+        tone: "text-brand-navy"
+      },
+      {
+        title: "2 setup sessions in progress",
+        detail: "Setup Wizard is currently being used for new environments.",
+        icon: "wand",
+        tone: "text-sky-700"
+      },
+      {
+        title: "16 knowledge searches completed",
+        detail: "People are using knowledge tools to find answers and project context.",
+        icon: "chart",
+        tone: "text-emerald-700"
+      }
+    ];
+
+    const groupedTools = [
+      { name: "Innovation", description: "Core spaces for initiatives, intake, and portfolio visibility.", tone: "innovation" },
+      { name: "AI & Knowledge", description: "AI support and knowledge discovery for fast decision-making.", tone: "ai" },
+      { name: "Operations", description: "Operational modules that help teams prepare and manage environments.", tone: "operations" },
+      { name: "Support", description: "Support tools that help teams resolve issues and stay informed.", tone: "support" }
+    ];
+
+    const iconMap = {
+      hub: `<svg class="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v5"></path><path d="M12 16v5"></path><path d="M3 12h5"></path><path d="M16 12h5"></path><circle cx="12" cy="12" r="4"></circle></svg>`,
+      robot: `<svg class="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v3"></path><rect x="5" y="7" width="14" height="11" rx="3"></rect><path d="M9 11h.01"></path><path d="M15 11h.01"></path><path d="M8 16h8"></path></svg>`,
+      book: `<svg class="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2Z"></path></svg>`,
+      wand: `<svg class="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m4 20 16-16"></path><path d="m15 4 1-2 1 2 2 1-2 1-1 2-1-2-2-1 2-1Z"></path><path d="m5 10 1-2 1 2 2 1-2 1-1 2-1-2-2-1 2-1Z"></path></svg>`,
+      chart: `<svg class="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"></path><path d="m7 14 4-4 3 3 5-6"></path></svg>`,
+      layers: `<svg class="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m12 3 9 5-9 5-9-5 9-5Z"></path><path d="m3 12 9 5 9-5"></path><path d="m3 16 9 5 9-5"></path></svg>`,
+      toolbox: `<svg class="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M10 5h4a2 2 0 0 1 2 2v1H8V7a2 2 0 0 1 2-2Z"></path><rect x="3" y="8" width="18" height="11" rx="2"></rect><path d="M3 13h18"></path><path d="M10 13v2"></path><path d="M14 13v2"></path></svg>`,
+      library: `<svg class="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 22h16"></path><path d="M6 18V8"></path><path d="M10 18V8"></path><path d="M14 18V8"></path><path d="M18 18V8"></path><path d="M3 8l9-5 9 5"></path></svg>`
+    };
+
+    const state = { search: "", filter: "all" };
+
+    const toolGroupsContainer = document.getElementById("tool-groups");
+    const insightsGrid = document.getElementById("insights-grid");
+    const portalSearch = document.getElementById("portal-search");
+    const activeProjectCount = document.getElementById("active-project-count");
+    const resultsMeta = document.getElementById("results-meta");
+    const emptyState = document.getElementById("empty-state");
+    const filterButtons = Array.from(document.querySelectorAll("#category-filters [data-filter]"));
+
+    function statusBadge(tool) {
+      if (tool.statusType === "active") {
+        return `<span class="inline-flex items-center gap-2 rounded-full bg-emerald-50 px-3 py-2 text-[0.7rem] font-bold uppercase tracking-[0.18em] text-emerald-700"><span class="pulse-dot h-2 w-2 rounded-full bg-emerald-500"></span>Active</span>`;
+      }
+
+      return `<span class="inline-flex items-center rounded-full bg-orange-100 px-3 py-2 text-[0.7rem] font-bold uppercase tracking-[0.18em] text-brand-orange">Beta</span>`;
+    }
+
+    function renderToolGroups() {
+      toolGroupsContainer.innerHTML = groupedTools.map((group) => {
+        const groupTools = tools.filter((tool) => tool.group === group.name);
+        return `
+          <section class="tool-group reveal grid gap-6 lg:grid-cols-[280px_minmax(0,1fr)]" data-group="${group.name}">
+            <div class="lg:sticky lg:top-28 lg:self-start">
+              <p class="text-xs font-semibold uppercase tracking-[0.26em] text-brand-navy/70">${group.name}</p>
+              <h3 class="mt-3 text-3xl font-black tracking-tight">${group.name}</h3>
+              <p class="mt-4 text-base text-slate-600">${group.description}</p>
+            </div>
+            <div class="grid gap-5 md:grid-cols-2">
+              ${groupTools.map((tool) => `
+                <article
+                  class="tool-card panel lift rounded-[1.75rem] p-6 shadow-soft"
+                  data-name="${tool.name.toLowerCase()}"
+                  data-categories='${JSON.stringify(tool.categories)}'
+                  data-search="${[tool.name, tool.group, tool.description, tool.usageHint, tool.metricLabel, tool.status].join(" ").toLowerCase()}"
+                  data-tone="${group.tone}"
+                  data-url="${tool.url}"
+                  tabindex="0"
+                  role="link"
+                >
+                  <div class="flex items-start justify-between gap-4">
+                    <span class="inline-flex h-14 w-14 items-center justify-center rounded-2xl bg-brand-navy text-white shadow-soft">${iconMap[tool.icon]}</span>
+                    ${statusBadge(tool)}
+                  </div>
+                  <div class="mt-6">
+                    <p class="text-xs font-semibold uppercase tracking-[0.22em] text-slate-500">${tool.updatedLabel}</p>
+                    <h4 class="mt-3 text-2xl font-bold tracking-tight">${tool.name}</h4>
+                    <p class="mt-3 text-sm text-slate-600">${tool.description}</p>
+                  </div>
+                  <div class="mt-6 rounded-3xl border border-white/60 bg-white/50 p-4">
+                    <span class="block font-['Space_Grotesk'] text-3xl font-bold text-brand-navy">${tool.metricValue}</span>
+                    <span class="mt-1 block text-xs font-semibold uppercase tracking-[0.18em] text-slate-500">${tool.metricLabel}</span>
+                    <p class="mt-3 text-sm text-slate-600">${tool.usageHint}</p>
+                  </div>
+                  <div class="mt-6 flex items-center justify-between gap-4">
+                    <span class="text-xs font-semibold uppercase tracking-[0.18em] text-brand-orange">${tool.status}</span>
+                    <a class="tool-card-link inline-flex items-center gap-2 text-sm font-bold text-brand-navy transition hover:text-brand-orange" href="${tool.url}" target="_blank" rel="noreferrer">
+                      ${tool.primaryAction}
+                      <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7"></path><path d="M8 7h9v9"></path></svg>
+                    </a>
+                  </div>
+                </article>
+              `).join("")}
+            </div>
+          </section>
+        `;
+      }).join("");
+    }
+
+    function renderInsights() {
+      insightsGrid.innerHTML = insights.map((item) => `
+        <article class="panel lift reveal rounded-[1.75rem] p-6 shadow-soft">
+          <div class="mb-4 inline-flex rounded-2xl bg-white/80 p-3 ${item.tone} shadow-sm">${iconMap[item.icon]}</div>
+          <strong class="block text-xl font-bold">${item.title}</strong>
+          <p class="mt-2 text-sm text-slate-600">${item.detail}</p>
+        </article>
+      `).join("");
+    }
+
+    function syncFilters() {
+      filterButtons.forEach((button) => {
+        button.classList.toggle("is-active", button.dataset.filter === state.filter);
+      });
+    }
+
+    function applyFilters() {
+      const query = state.search.trim().toLowerCase();
+      const cards = Array.from(document.querySelectorAll(".tool-card"));
+      const groups = Array.from(document.querySelectorAll(".tool-group"));
+      let visibleCount = 0;
+
+      cards.forEach((card) => {
+        const categories = JSON.parse(card.dataset.categories);
+        const matchesFilter = state.filter === "all" || categories.includes(state.filter);
+        const matchesSearch = !query || card.dataset.search.includes(query);
+        const visible = matchesFilter && matchesSearch;
+        card.classList.toggle("is-hidden", !visible);
+        if (visible) visibleCount += 1;
+      });
+
+      groups.forEach((group) => {
+        const hasVisible = Array.from(group.querySelectorAll(".tool-card")).some((card) => !card.classList.contains("is-hidden"));
+        group.classList.toggle("is-hidden", !hasVisible);
+      });
+
+      if (!query && state.filter === "all") {
+        resultsMeta.textContent = `Showing all ${visibleCount} tools.`;
+      } else if (!query) {
+        resultsMeta.textContent = `Showing ${visibleCount} ${state.filter} tool${visibleCount === 1 ? "" : "s"}.`;
+      } else {
+        resultsMeta.textContent = `Showing ${visibleCount} result${visibleCount === 1 ? "" : "s"} for "${state.search.trim()}".`;
+      }
+
+      emptyState.classList.toggle("hidden", visibleCount !== 0);
+    }
+
+    function revealOnScroll() {
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) entry.target.classList.add("is-visible");
+        });
+      }, { threshold: 0.14 });
+
+      document.querySelectorAll(".reveal").forEach((el) => observer.observe(el));
+    }
+
+    function openToolsSection() {
+      document.getElementById("tools-section").scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+
+    function runAction(action) {
+      const handlers = {
+        "open-projects": openToolsSection,
+        "open-innovation-hub": () => window.open("https://example.com/innovation-hub", "_blank", "noreferrer"),
+        "open-chatbot": () => window.open("https://example.com/ai-chatbot", "_blank", "noreferrer"),
+        "open-knowledge": () => window.open("https://example.com/ai-knowledgebase", "_blank", "noreferrer"),
+        "open-setup": () => window.open("https://example.com/setup-wizard/", "_blank", "noreferrer")
+      };
+
+      if (handlers[action]) handlers[action]();
+    }
+
+    renderToolGroups();
+    renderInsights();
+    revealOnScroll();
+    activeProjectCount.textContent = String(tools.length).padStart(2, "0");
+    applyFilters();
+
+    document.addEventListener("click", (event) => {
+      const actionButton = event.target.closest("[data-action]");
+      if (actionButton) runAction(actionButton.dataset.action);
+
+      const toolCard = event.target.closest(".tool-card");
+      if (toolCard && !event.target.closest("a")) {
+        window.open(toolCard.dataset.url, "_blank", "noreferrer");
+      }
+    });
+
+    document.addEventListener("keydown", (event) => {
+      const shortcut = (event.metaKey || event.ctrlKey) && event.key.toLowerCase() === "k";
+      if (shortcut) {
+        event.preventDefault();
+        portalSearch.focus();
+        portalSearch.select();
+      }
+    });
+
+    portalSearch.addEventListener("input", (event) => {
+      state.search = event.target.value;
+      applyFilters();
+      if (state.search.trim()) openToolsSection();
+    });
+
+    filterButtons.forEach((button) => {
+      button.addEventListener("click", () => {
+        state.filter = button.dataset.filter;
+        syncFilters();
+        applyFilters();
+      });
+    });
+
+    document.getElementById("open-projects-cta").addEventListener("click", openToolsSection);
+    document.getElementById("submit-idea-cta").addEventListener("click", () => runAction("open-innovation-hub"));
+
+    document.querySelectorAll(".tool-card").forEach((card) => {
+      card.addEventListener("keydown", (event) => {
+        if (event.key === "Enter" || event.key === " ") {
+          event.preventDefault();
+          window.open(card.dataset.url, "_blank", "noreferrer");
+        }
+      });
+    });
+  </script>
 </body>
 </html>

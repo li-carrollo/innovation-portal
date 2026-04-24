@@ -2,112 +2,138 @@ const projects = [
   {
     name: "Innovation Hub",
     category: "Core Platform",
-    filterCategory: "ops",
+    filterCategory: ["ops"],
     description: "Central launchpad for innovation initiatives, shared resources, and connected internal workspaces.",
     url: "https://example.com/innovation-hub",
     status: "active",
     statusLabel: "Active",
     icon: "hub",
+    metricValue: "24",
+    metricLabel: "live spaces",
+    usageHint: "Best starting point for navigating pilots and workstreams.",
     size: "featured",
     tone: "orange"
   },
   {
     name: "AI chatbot",
     category: "Artificial Intelligence",
-    filterCategory: "ai",
+    filterCategory: ["ai"],
     description: "Conversational assistant experience for answering questions, guiding workflows, and supporting teams.",
     url: "https://example.com/ai-chatbot",
     status: "active",
     statusLabel: "Active",
     icon: "robot",
+    metricValue: "91%",
+    metricLabel: "resolution rate",
+    usageHint: "Use for quick answers, workflow guidance, and internal help.",
     size: "standard",
     tone: "astronaut"
   },
   {
     name: "AI Knowledgebase",
     category: "Knowledge System",
-    filterCategory: "knowledge",
+    filterCategory: ["ai", "knowledge"],
     description: "Searchable knowledge environment for documents, answers, references, and organization-wide learning.",
     url: "https://example.com/ai-knowledgebase",
     status: "beta",
     statusLabel: "Beta",
     icon: "book",
+    metricValue: "3.2k",
+    metricLabel: "indexed docs",
+    usageHint: "Great for retrieval, references, and reusable project knowledge.",
     size: "standard",
     tone: "grey"
   },
   {
     name: "Setup Wizard",
     category: "Configuration",
-    filterCategory: "ops",
+    filterCategory: ["ops"],
     description: "Guided onboarding flow for setting up tools, environments, and project-ready configurations.",
     url: "https://example.com/setup-wizard/",
     status: "active",
     statusLabel: "Active",
     icon: "wand",
+    metricValue: "12",
+    metricLabel: "active flows",
+    usageHint: "Guides teams into ready-to-use project environments.",
     size: "standard",
     tone: "orange"
   },
   {
     name: "Dashboard Variance",
     category: "Analytics",
-    filterCategory: "ops",
+    filterCategory: ["ops"],
     description: "Track performance movement, exceptions, and operational variance through a focused dashboard view.",
     url: "https://example.com/dashboard-variance",
     status: "active",
     statusLabel: "Active",
     icon: "chart",
+    metricValue: "18",
+    metricLabel: "signals today",
+    usageHint: "Watch variances, spikes, and trend changes as they happen.",
     size: "featured",
     tone: "astronaut"
   },
   {
     name: "Project Portfolio Management",
     category: "Governance",
-    filterCategory: "ops",
+    filterCategory: ["ops"],
     description: "Portfolio-level visibility for prioritization, planning, dependencies, and decision support.",
     url: "https://example.com/project-portfolio-management",
     status: "beta",
     statusLabel: "Beta",
     icon: "layers",
+    metricValue: "37",
+    metricLabel: "tracked initiatives",
+    usageHint: "Prioritize, sequence, and compare project bets in one view.",
     size: "standard",
     tone: "grey"
   },
   {
     name: "GLPi",
     category: "Service Management",
-    filterCategory: "ops",
+    filterCategory: ["ops"],
     description: "Service desk and IT asset management workspace for requests, issue handling, and operational support.",
     url: "https://example.com/glpi",
     status: "active",
     statusLabel: "Active",
     icon: "toolbox",
+    metricValue: "128",
+    metricLabel: "open requests",
+    usageHint: "Useful for service workflows, asset support, and intake.",
     size: "standard",
     tone: "orange"
   },
   {
     name: "MediaWiki",
     category: "Collaboration",
-    filterCategory: "knowledge",
+    filterCategory: ["knowledge"],
     description: "Collaborative documentation space for process knowledge, project pages, and shared institutional memory.",
     url: "https://example.com/mediawiki",
     status: "active",
     statusLabel: "Active",
     icon: "library",
+    metricValue: "460",
+    metricLabel: "knowledge pages",
+    usageHint: "Ideal for collaborative documentation and institutional memory.",
     size: "standard",
     tone: "astronaut"
   }
 ];
 
 const projectGrid = document.getElementById("project-grid");
-const projectCount = document.getElementById("project-count");
+const projectCountBadge = document.getElementById("project-count-badge");
 const projectSearch = document.getElementById("project-search");
+const focusSearchButton = document.getElementById("focus-search-button");
+const launchProjectButton = document.getElementById("launch-project-button");
 const emptyState = document.getElementById("empty-state");
 const resultsMeta = document.getElementById("results-meta");
-const searchReadyCount = document.getElementById("search-ready-count");
 const heroSection = document.getElementById("hero-section");
 const projectsSection = document.getElementById("projects-section");
 const topbar = document.getElementById("topbar");
 const filterBar = document.getElementById("category-filters");
 const filterButtons = Array.from(document.querySelectorAll(".filter-chip"));
+const heroVisual = document.querySelector(".hero-visual");
 
 const searchState = {
   query: "",
@@ -200,12 +226,14 @@ function createProjectCard(project, index) {
   article.setAttribute("role", "link");
   article.setAttribute("aria-label", `Open ${project.name}`);
   article.dataset.url = project.url;
-  article.dataset.category = project.filterCategory;
+  article.dataset.category = JSON.stringify(project.filterCategory);
   article.dataset.search = [
     project.name,
     project.category,
     project.description,
-    project.statusLabel
+    project.statusLabel,
+    project.usageHint,
+    project.metricLabel
   ].join(" ").toLowerCase();
   article.style.animationDelay = `${index * 90}ms`;
 
@@ -217,6 +245,13 @@ function createProjectCard(project, index) {
     <p class="project-meta">${project.category}</p>
     <h4 class="project-title">${project.name}</h4>
     <p class="project-description">${project.description}</p>
+    <div class="project-insight">
+      <div>
+        <span class="project-metric-value">${project.metricValue}</span>
+        <span class="project-metric-label">${project.metricLabel}</span>
+      </div>
+      <p class="project-hint">${project.usageHint}</p>
+    </div>
     <div class="project-footer">
       <span class="project-status">${project.statusLabel}</span>
       <a class="project-link" href="${project.url}" target="_blank" rel="noreferrer" aria-label="Launch ${project.name}">
@@ -253,8 +288,7 @@ projectCards.forEach((card) => {
   projectGrid.appendChild(card);
 });
 
-projectCount.textContent = String(projects.length).padStart(2, "0");
-searchReadyCount.textContent = "On";
+projectCountBadge.textContent = String(projects.length).padStart(2, "0");
 
 function updateSearchState(nextState = {}) {
   Object.assign(searchState, nextState);
@@ -291,7 +325,8 @@ function filterProjects(query) {
 
   projectCards.forEach((card) => {
     const matchesSearch = !normalizedQuery || card.dataset.search.includes(normalizedQuery);
-    const matchesFilter = searchState.activeFilter === "all" || card.dataset.category === searchState.activeFilter;
+    const categories = JSON.parse(card.dataset.category || "[]");
+    const matchesFilter = searchState.activeFilter === "all" || categories.includes(searchState.activeFilter);
     const matches = matchesSearch && matchesFilter;
     card.classList.toggle("is-hidden", !matches);
 
@@ -354,10 +389,34 @@ filterBar.addEventListener("click", (event) => {
   updateFilterState(button.dataset.filter);
 });
 
-document.querySelector('a[href="#projects"]').addEventListener("click", (event) => {
-  event.preventDefault();
+focusSearchButton.addEventListener("click", () => {
+  projectSearch.focus();
+  projectSearch.select();
+});
+
+launchProjectButton.addEventListener("click", () => {
   projectsSection.scrollIntoView({ behavior: "smooth", block: "start" });
 });
+
+if (heroVisual) {
+  heroVisual.addEventListener("pointermove", (event) => {
+    const rect = heroVisual.getBoundingClientRect();
+    const x = ((event.clientX - rect.left) / rect.width - 0.5) * 10;
+    const y = ((event.clientY - rect.top) / rect.height - 0.5) * -10;
+
+    heroVisual.style.setProperty("--hero-tilt-x", `${x.toFixed(2)}deg`);
+    heroVisual.style.setProperty("--hero-tilt-y", `${y.toFixed(2)}deg`);
+    heroVisual.style.setProperty("--hero-glow-x", `${((event.clientX - rect.left) / rect.width) * 100}%`);
+    heroVisual.style.setProperty("--hero-glow-y", `${((event.clientY - rect.top) / rect.height) * 100}%`);
+  });
+
+  heroVisual.addEventListener("pointerleave", () => {
+    heroVisual.style.setProperty("--hero-tilt-x", "0deg");
+    heroVisual.style.setProperty("--hero-tilt-y", "0deg");
+    heroVisual.style.setProperty("--hero-glow-x", "50%");
+    heroVisual.style.setProperty("--hero-glow-y", "50%");
+  });
+}
 
 updateSearchState();
 updateFilterState("all");
