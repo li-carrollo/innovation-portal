@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Service IT+ Innovation Portal</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="page-shell">
+    <div class="ambient ambient-orange"></div>
+    <div class="ambient ambient-blue"></div>
+
+    <header class="site-header">
+      <nav class="topbar" id="topbar">
+        <div class="brand-lockup">
+          <img class="brand-logo" src="assets/sit-plus-logo.png" alt="Service IT+ logo">
+          <div>
+            <p class="eyebrow">Service IT+ Digital Workspace</p>
+            <h1>Innovation Portal</h1>
+          </div>
+        </div>
+        <label class="topbar-search" for="project-search">
+          <span class="search-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="11" cy="11" r="7"></circle>
+              <path d="m20 20-3.5-3.5"></path>
+            </svg>
+          </span>
+          <span class="search-label">Search project</span>
+          <input
+            id="project-search"
+            class="search-input"
+            type="search"
+            name="project-search"
+            placeholder="Search by name, category, or status"
+            autocomplete="off"
+          >
+          <span class="search-shortcut" aria-hidden="true">Cmd + K</span>
+        </label>
+      </nav>
+    </header>
+
+    <header class="hero" id="hero-section">
+      <section class="hero-panel">
+        <div class="hero-copy">
+          <p class="section-label">Brand-aligned launchpad</p>
+          <h2>One branded destination for every <span class="hero-accent">innovation initiative</span>.</h2>
+          <p class="hero-text">
+            Give teams a cleaner way to reach project workspaces, pilot environments, support tools,
+            and internal platforms with a portal designed around the Service IT+ identity.
+          </p>
+        </div>
+
+        <aside class="highlight-card">
+          <p class="highlight-label">Portal Snapshot</p>
+          <div class="metric-grid">
+            <div class="metric">
+              <span class="metric-value" id="project-count">0</span>
+              <span class="metric-name">Projects</span>
+            </div>
+            <div class="metric">
+              <span class="metric-value" id="search-ready-count">01</span>
+              <span class="metric-name">Search</span>
+            </div>
+            <div class="metric wide">
+              <span class="metric-name">Purpose</span>
+              <strong>Find the right innovation workspace quickly and launch it from one branded portal.</strong>
+            </div>
+          </div>
+        </aside>
+      </section>
+    </header>
+
+    <main>
+      <section class="filters-section">
+        <div class="filter-bar" id="category-filters" role="tablist" aria-label="Project categories">
+          <button class="filter-chip is-active" type="button" data-filter="all">All</button>
+          <button class="filter-chip" type="button" data-filter="ai">AI</button>
+          <button class="filter-chip" type="button" data-filter="ops">Ops</button>
+          <button class="filter-chip" type="button" data-filter="knowledge">Knowledge</button>
+        </div>
+      </section>
+
+      <section class="projects-section" id="projects-section">
+        <div class="section-header">
+          <div>
+            <p class="section-label">Active Destinations</p>
+            <h3>Innovation tools and platforms</h3>
+          </div>
+          <p class="section-text">
+            Search above to jump faster. Each card opens its linked innovation project in a new tab.
+          </p>
+        </div>
+
+        <p class="results-meta" id="results-meta">Showing all projects.</p>
+        <div class="project-grid" id="project-grid" aria-live="polite"></div>
+        <p class="empty-state" id="empty-state" hidden>No matching projects found. Try a different keyword.</p>
+      </section>
+
+      <section class="guide-section" id="guide">
+        <div class="guide-card">
+          <div>
+            <p class="section-label">Quick update guide</p>
+            <h3>Change the project names and links in one file.</h3>
+          </div>
+          <p>
+            Update the <code>projects</code> array in <code>script.js</code> to manage each project tile.
+            The layout lives in <code>index.html</code>, while <code>styles.css</code> controls the branded UI.
+          </p>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
